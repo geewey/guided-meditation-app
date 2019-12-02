@@ -8,3 +8,17 @@ img{
     width: 100%;
     z-index: -10;
 }
+
+/* body {
+	display: grid;
+    grid-template-columns: 8fr 8fr 4fr;
+    grid-template-rows: 5fr 8fr 4fr;
+} */
+.track-picker,
+.track-player-panel{
+    display: grid;
+    grid-template-columns: 8fr 6fr;
+}
+/* button{
+    background: none;
+} */
