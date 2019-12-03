@@ -8,21 +8,39 @@ img{
     width: 100%;
     z-index: -10;
 }
-
-/* body {
-	display: grid;
-    grid-template-columns: 8fr 8fr 4fr;
-    grid-template-rows: 5fr 8fr 4fr;
-} */
 .track-picker,
 .track-player-panel{
-    display: grid;
-    grid-template-columns: 8fr 6fr;
+    height: 80%;
+    flex: 1;
 }
-/* button{
-    background: none;
-} */
+.track-player-panel{
+    text-align: center;
+}
 
+body {
+    display: grid;
+    grid-template-columns: 8fr 4fr;
+    justify-content: space-evenly;
+}
 .card{
     border: 2px solid white;
+    height: 10%;
+    width: 40%;
+    text-align: center;
+    padding: 1rem;
+    margin: 1rem 2rem;
+}
+.card button{
+    background: none;
+    width: 20%;
+    height: 20%;
+    color: white;
+    border: 2px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.5s ease;
+}
+.card button:hover {
+    color: black;
+    background: white;
 }

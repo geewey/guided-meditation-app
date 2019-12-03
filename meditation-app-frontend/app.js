@@ -1,85 +1,67 @@
 const app = () => {
 // CONSTs
+const TRACKS_URL = 'http://localhost:3000/tracks';
 const trackPicker = document.querySelector('.track-picker');
 const trackPlayerPanel = document.querySelector('.track-player-panel');
-let http = import('http');
-let url = import('url');
-let fs = import('fs');
-const arr = [];
-let bufferString;
-
-const csvHandler = (req, res) => { 
-    fs.readFile('./tracks/Tracklist.csv', function(err, data){
-        if (err){
-            return console.log(err);
-        }
-        bufferString = data.toString();
-
-        arr = bufferString.split('\n');
-        console.log(arr);
-
-        let jsonObject = [];
-        let headers = arr[0].split(',');
-        for(let i = 1; i < arr.length; i++){
-            let data = arr[i].split(',')
-            let obj = {};
-            for(let j = 0; j < data.length; j++){
-                obj[headers[j].trim()] = data[j].trim();
-            }
-            jsonObject.push(obj);
-        }
-        JSON.stringify(jsonObject);
-
-        // for(i = 0; i < arr.length; i++){
-        //     JSON.stringify(arr[i]);
-        // }
-        // JSON.parse(arr)
-        // res.send(arr)
-    })
-}
-
-
-
-
 
 //FUNCTIONs
 const init = () => {
-    renderTracks();
-    csvHandler();
+    fetchTracks();
 }
-
-const renderTracks = () => {
-    fs.forEach(csv => trackCards(csv))
+const fetchTracks = () => {
+    fetch(TRACKS_URL)
+    .then(res => res.json())
+    .then(data => renderTracks(data))
 }
-
-const trackCards = (csv) => {
+const renderTracks = data => {
+    data.forEach(track => trackCards(track))
+}
+const trackCards = track => {
     //at some point display the track cards with images.
     const card = document.createElement('div')
     card.className = "card"
     const title = document.createElement('h2')
-    title.innerText = "Track Title"
+    title.innerText = track.title
     title.style.color = "white"
     const likeBtn = document.createElement('button')
     likeBtn.innerText = "♡"
+    const viewBtn = document.createElement('button')
+    viewBtn.innerText = "View"
+    const br = document.createElement('br')
 
+    trackPicker.append(card, br)
+    card.append(title, viewBtn, likeBtn)
 
-    trackPicker.append(card)
-    card.append(title, likeBtn)
+    viewBtn.addEventListener('click', e => {
+        viewTrack(track)
+    })
+    //when user clicks on track need to show the selected track details with the player feature
 }
 
-// CARD HTML TEMPLATE:
-//<div class="card">
-//<h2>TRACK TITLE</h2>
-//<img src=toy_image_url class="track-image" />
-//<button class="like-btn">Like ♡</button>
-//</div>
+const viewTrack = track => {
+    trackPlayerPanel.innerHTML = ""
+
+    const h1 = document.createElement('h1')
+    h1.innerText = track.title
+    const h2 = document.createElement('h2')
+    h2.innerText = `${Math.floor(track.length_in_seconds / 60)} min ` + `${track.length_in_seconds % 60} secs`
+    h2.style.color = "white"
+
+    const audio = document.createElement('audio')
+    audio.src = track.filepath
+    const play = document.querySelector('.play');
+    const replay = document.querySelector('replay');
+    const outline = document.querySelector('.moving-outline circle');
+
+    const timeDisplay = document.createElement('h1')
+    timeDisplay.className = "time-display"
+    timeDisplay.innerText = "0:00"
+
+    trackPlayerPanel.append(h1, h2, audio, timeDisplay)
+}
 
 
 init();
-
-
-// In the trackPicker section we need to display the trackCards with the track titles
-//maybe inclue the track Categories?
 
 // In the trackPlayerPanel section we need to display the selected track details:
 // track title - track length - track timer - favorite button
