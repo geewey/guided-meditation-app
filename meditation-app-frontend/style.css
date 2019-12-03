@@ -22,3 +22,7 @@ img{
 /* button{
     background: none;
 } */
+
+.card{
+    border: 2px solid white;
+}
