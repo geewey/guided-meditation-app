@@ -20,7 +20,8 @@ const app = () => {
   const renderTrackCard = track => {
     //at some point display the track cards with images.
     const card = document.createElement("div");
-    card.className = "card";
+    const trackCategory = track.category.split(" ").join("-");
+    card.className = `card ${trackCategory}`;
     const title = document.createElement("h2");
     title.innerText = track.title;
     title.style.color = "white";
