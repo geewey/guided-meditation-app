@@ -22,11 +22,14 @@ const app = () => {
     const card = document.createElement("div");
     const trackCategory = track.category.split(" ").join("-");
     card.className = `card ${trackCategory}`;
+
     const title = document.createElement("h2");
     title.innerText = track.title;
     title.style.color = "white";
+
     const likeBtn = document.createElement("button");
     likeBtn.innerText = "♡";
+
     const viewBtn = document.createElement("button");
     viewBtn.innerText = "View";
     // may replace br with CSS margin/padding
@@ -46,6 +49,7 @@ const app = () => {
 
     const h1 = document.createElement("h1");
     h1.innerText = track.title;
+
     const h2 = document.createElement("h2");
     h2.innerText =
       `${Math.floor(track.length_in_seconds / 60)} min ` +
@@ -53,7 +57,7 @@ const app = () => {
     h2.style.color = "white";
 
     const audio = document.createElement("audio");
-    audio.src = track.filepath;
+    audio.src = `./tracks/${track.filepath}`;
 
     const playAnimationDiv = document.createElement("div");
     playAnimationDiv.className = "play-animation";

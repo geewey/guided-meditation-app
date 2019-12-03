@@ -8,7 +8,7 @@ class UsersController < ApplicationController
     end
     
     def create
-        binding.pry
+        byebug
         user = User.new
         user.username = "HI MOM!"
         render json: user, except: [:created_at, :updated_at]
