@@ -1,37 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="./style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="./style.css" />
     <title>Meditation App</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="app">
-        <!-- IF WE HAVE TIME ADD A NAV BAR!? -->
+      <!-- IF WE HAVE TIME ADD A NAV BAR!? -->
 
-        <div id="sign-in-img-container">
-        <img src="https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=925&q=80">
-        </div>
-        <div id="sign-in-overlay"> 
-            <h1>Enter Into Meditation</h1>
-            <form action="submit">
-                <input placeholder="Enter Username">
-                <button type="submit">Submit</button>
-            </form>
-        </div>
+      <div id="sign-in-img-container">
+        <img
+          id="background-image"
+          src="https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=925&q=80"
+        />
+      </div>
+      <div id="sign-in-overlay">
+        <h1>Enter Into Meditation</h1>
+        <form action="submit">
+          <input placeholder="Enter Username" />
+          <button type="submit">Submit</button>
+        </form>
+      </div>
     </div>
-    <br>
-    <div class="track-picker">
-        <!-- display all track cards -->
+    <br />
+    <div class="all-tracks-panel">
+      <!-- display all track cards -->
     </div>
 
     <div class="track-player-panel">
-        <!-- display selected track with details and time-display -->
+      <!-- display selected track with details and time-display -->
     </div>
 
-
     <script src="./app.js"></script>
-</body>
+  </body>
 </html>

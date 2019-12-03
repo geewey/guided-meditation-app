@@ -1,46 +1,79 @@
-h1{
-    color: white;
-}
-img{
-    position: fixed;
-    top: 0%;
-    left: 0%;
-    width: 100%;
-    z-index: -10;
-}
-.track-picker,
-.track-player-panel{
-    height: 80%;
-    flex: 1;
-}
-.track-player-panel{
-    text-align: center;
+body {
+  display: grid;
+  grid-template-columns: 8fr 4fr;
+  justify-content: space-evenly;
 }
 
-body {
-    display: grid;
-    grid-template-columns: 8fr 4fr;
-    justify-content: space-evenly;
+h1 {
+  color: white;
 }
-.card{
-    border: 2px solid white;
-    height: 10%;
-    width: 40%;
-    text-align: center;
-    padding: 1rem;
-    margin: 1rem 2rem;
+
+nav-bar {
+  width: 100%;
 }
-.card button{
-    background: none;
-    width: 20%;
-    height: 20%;
-    color: white;
-    border: 2px solid white;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.5s ease;
+
+#background-image {
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  z-index: -10;
 }
+
+.all-tracks-panel,
+.track-player-panel {
+  height: 80%;
+  flex: 1;
+}
+
+.track-player-panel {
+  text-align: center;
+}
+
+.card {
+  border: 2px solid white;
+  height: 10%;
+  width: 40%;
+  text-align: center;
+  padding: 1rem;
+  margin: 1rem 2rem;
+}
+
+.card button {
+  background: none;
+  width: 20%;
+  height: 20%;
+  color: white;
+  border: 2px solid white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
 .card button:hover {
-    color: black;
-    background: white;
+  color: black;
+  background: white;
+}
+
+/* .track-player-panel img {
+  height: 3%;
+  margin-top: 150px;
+} */
+
+.play-animation {
+  height: 20%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.play-animation svg {
+  pointer-events: none;
+}
+
+.play-animation svg,
+img {
+  position: absolute;
 }
