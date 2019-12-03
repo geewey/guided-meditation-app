@@ -49,3 +49,6 @@ gem 'faker'
 
 # Debugger
 gem 'pry'
+
+#Bootstrap - for navbar
+gem 'bootstrap', '~> 4.3.1'
