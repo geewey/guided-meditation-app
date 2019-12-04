@@ -14,6 +14,7 @@ meditation-app-backend/log/*
 meditation-app-backend/tmp/*
 meditation-app-backend/!/log/.keep
 meditation-app-backend/!/tmp/.keep
+meditation-app-backend/.byebug_history
 
 # Ignore uploaded files in development.
 meditation-app-backend/storage/*
