@@ -52,8 +52,8 @@ const findOrCreateUser = userInputForm => {
 const fetchTracks = () => {
   API.get(TRACKS_URL).then(data => renderTracks(data));
 };
-const renderTracks = data => {
-  data.forEach(track => renderTrackCard(track));
+const renderTracks = tracksData => {
+  tracksData.forEach(track => renderTrackCard(track));
 };
 const renderTrackCard = track => {
   //at some point display the track cards with images.
@@ -157,7 +157,6 @@ const checkPlaying = (audio, playImg) => {
     playImg.addEventListener("click", e => {
       checkPlaying(audio, playImg);
     });
-
   }
   // when user clicks on a category - function getTracksByCategory
   //  const getTracksByCategory = () => {
@@ -165,10 +164,9 @@ const checkPlaying = (audio, playImg) => {
   //  }
 
   //  navbar click event for Favorites - should show user all tracks that have been liked
-
-  init();
 };
 
+init();
 
 //HTML background image?:
 // src="https://images.unsplash.com/photo-1542382156909-9ae37b3f56fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=813&q=80"
