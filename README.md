@@ -3,11 +3,10 @@
 - Github: https://github.com/developedbyed/meditation-app
 - Video tutorial: https://www.youtube.com/watch?v=oMBXdZzYqEk
 
-# To load track files to JSON server, do this:
+# To load track files to rails server, do this:
 
-(1) From the root folder, run commands in this order:
+(1) From the meditation-app-backend folder, run commands in this order:
 
-- npm install -g json-server
-- json-server --w ./meditation-app-frontend/tracks_db.json
+- rails s
 
-(2) Visit localhost:3000/tracks
+(2) Active routes include localhost:3000/tracks and localhost:3000/users

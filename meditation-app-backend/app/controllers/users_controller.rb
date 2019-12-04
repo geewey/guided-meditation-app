@@ -8,10 +8,10 @@ class UsersController < ApplicationController
     end
     
     def create
-        byebug
-        user = User.new
-        user.username = "HI MOM!"
-        render json: user, except: [:created_at, :updated_at]
+        user = User.find_or_create_by(username: params["username"])
+        render json: user, :include => {
+            :favorites => {:except => [:created_at, :updated_at]}
+        }, :except => [:created_at, :updated_at]
     end
 
 end
