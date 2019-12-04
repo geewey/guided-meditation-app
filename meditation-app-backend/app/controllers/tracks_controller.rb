@@ -1,8 +1,8 @@
 class TracksController < ApplicationController
 
     def index
-        track = Track.all
-        render json: track, :include => {
+        tracks = Track.all
+        render json: tracks, :include => {
             :favorites => {:except => [:created_at, :updated_at]}
         }, :except => [:created_at, :updated_at]
     end
