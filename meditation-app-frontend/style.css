@@ -8,8 +8,19 @@ h1 {
   color: white;
 }
 
-nav-bar {
+.navbar {
   width: 100%;
+  overflow: hidden;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+}
+
+#sign-in-img-container {
+  margin-top: 70px;
+}
+
+#sign-in-overlay {
+  margin-left: 15px;
 }
 
 #background-image {
