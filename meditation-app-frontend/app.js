@@ -84,13 +84,14 @@ const renderTrackCard = track => {
 
 const viewTrack = track => {
   trackPlayerPanel.innerHTML = "";
+  let timeInSecs = track.length_in_seconds
 
   const h1 = document.createElement("h1");
   h1.innerText = track.title;
 
   const h2 = document.createElement("h2");
   h2.innerText =
-    `${Math.floor(track.length_in_seconds / 60)} min ` +
+    `Run Time: ${Math.floor(track.length_in_seconds / 60)} min ` +
     `${track.length_in_seconds % 60} secs`;
   h2.style.color = "white";
 
@@ -104,8 +105,13 @@ const viewTrack = track => {
   playImg.className = "play";
   playImg.src = "./svg/play.svg";
   playImg.addEventListener("click", e => {
-    checkPlaying(audio, playImg);
+     checkPlaying(audio, playImg, timeDisplay, timeInSecs);
+
   });
+
+  const timeDisplay = document.createElement("h1");
+  timeDisplay.className = "time-display";
+  
 
   // replay fires only after time runs down to 0:00
   // const replay = document.querySelector("replay");
@@ -138,26 +144,39 @@ const viewTrack = track => {
   circleMovingOutline.setAttributeNS(null, "stroke-width", "20");
   movingOutlineSVG.append(circleMovingOutline);
 
-  const timeDisplay = document.createElement("h1");
-  timeDisplay.className = "time-display";
-  timeDisplay.innerText = "0:00";
 
-  playAnimationDiv.append(playImg, trackOutlineSVG, movingOutlineSVG);
   trackPlayerPanel.append(h1, h2, audio, playAnimationDiv, timeDisplay);
+  playAnimationDiv.append(playImg, trackOutlineSVG, movingOutlineSVG);
 };
 
-const checkPlaying = (audio, playImg) => {
+
+
+const checkPlaying = (audio, playImg, timeDisplay, timeInSecs) => {
   console.log(audio);
+
   if (audio.paused) {
     audio.play();
     playImg.src = "./svg/pause.svg";
+    setInterval(() => {
+      let mins = Math.floor(timeInSecs/ 60)
+      let seconds = Math.floor(timeInSecs % 60)
+      if (seconds < 10 ){
+        seconds = "0" + Math.floor(timeInSecs % 60)
+      }
+      timeDisplay.textContent = `${mins}:${seconds}`  
+      timeInSecs-- 
+     }, 1000)
   } else {
     audio.pause();
     playImg.src = "./svg/play.svg";
+
+    //need to pause the timeDisplay / timeInSecs.....
+
     playImg.addEventListener("click", e => {
       checkPlaying(audio, playImg);
     });
   }
+
   // when user clicks on a category - function getTracksByCategory
   //  const getTracksByCategory = () => {
   //     console.log('test')

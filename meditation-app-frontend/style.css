@@ -1,6 +1,6 @@
 .panels {
   display: grid;
-  grid-template-columns: 8fr 4fr;
+  grid-template-columns: 6fr 4fr;
   justify-content: space-evenly;
 }
 
@@ -39,6 +39,7 @@ h1 {
 
 .track-player-panel {
   text-align: center;
+  /* opacity: 0.2; */
 }
 
 .card {
