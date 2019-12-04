@@ -4,8 +4,8 @@ const apiHeader = {
   Accept: "application/json"
 };
 
-const get = url => {
-  return fetch(url).then(resp => resp.json());
+const get = (url, id = "") => {
+  return fetch(url + id).then(resp => resp.json());
 };
 
 const post = (url, postData) => {
@@ -16,8 +16,8 @@ const post = (url, postData) => {
   }).then(resp => resp.json());
 };
 
-const TRACKS_URL = "http://localhost:3000/tracks";
-const USERS_URL = "http://localhost:3000/users";
+const TRACKS_URL = "http://localhost:3000/tracks/";
+const USERS_URL = "http://localhost:3000/users/";
 
 const API = { get, post };
 
@@ -37,29 +37,58 @@ userForm.addEventListener("submit", e => {
 });
 const submitUser = (e, userForm) => {
   e.preventDefault();
-  const userInputForm = userForm.querySelector("input");
-  findOrCreateUser(userInputForm);
+  const userInputField = userForm.querySelector("input");
+  if (userInputField.value.length < 2) {
+    alert("Username must contain at least 2 characters.");
+  } else {
+    findOrCreateUser(userInputField, userForm);
+  }
 };
-const findOrCreateUser = userInputForm => {
-  API.post(USERS_URL, userInputForm.value)
-    .then(console.log) // rendering the username to the page, loading the favorites of an existing user
-    .then(() => {
-      userInputForm.value = "";
+const findOrCreateUser = (userInputField, userForm) => {
+  // renders the username to the page, in place of username input field
+  // loads the favorites of an existing user
+  API.post(USERS_URL, userInputField.value)
+    .then(userData => {
+      toggleUserSignIn(userInputField, userForm);
+      toggleUserFavorites(userData);
     })
     .catch(error => console.log(error.message));
 };
+const toggleUserSignIn = (userInputField, userForm) => {
+  const signInOverlay = document.querySelector("#sign-in-overlay");
+  const userWelcomeP = document.createElement("p");
+  userWelcomeP.className = "user-welcome-p";
+  userWelcomeP.innerText = `Welcome ${userInputField.value}!`;
+  userForm.className = "hidden";
+  userInputField.value = "";
+  signInOverlay.append(userWelcomeP);
+};
+
+const toggleUserFavorites = userData => {
+  const userFavorites = userData.favorites;
+  const allTracks = document.getElementsByClassName("track-card");
+  const editedAllTracks = allTracks.map(track => {
+    track.id, track.name;
+  });
+  userFavorites.filter(allTracks);
+  console.log(allTracks);
+  console.log(userFavorites);
+
+  // how to match track within user's favorites with all rendered tracks??
+};
 
 const fetchTracks = () => {
-  API.get(TRACKS_URL).then(data => renderTracks(data));
+  API.get(TRACKS_URL).then(tracksData => renderTracks(tracksData));
 };
 const renderTracks = tracksData => {
   tracksData.forEach(track => renderTrackCard(track));
 };
 const renderTrackCard = track => {
   //at some point display the track cards with images.
-  const card = document.createElement("div");
+  const trackCard = document.createElement("div");
   const trackCategory = track.category.split(" ").join("-");
-  card.className = `card ${trackCategory}`;
+  trackCard.className = `track-card ${trackCategory}`;
+  trackCard.id = `track-${track.id}`;
 
   const title = document.createElement("h2");
   title.innerText = track.title;
@@ -73,8 +102,8 @@ const renderTrackCard = track => {
   // may replace br with CSS margin/padding
   const br = document.createElement("br");
 
-  alltracksPanel.append(card, br);
-  card.append(title, viewBtn, likeBtn);
+  alltracksPanel.append(trackCard, br);
+  trackCard.append(title, viewBtn, likeBtn);
 
   viewBtn.addEventListener("click", e => {
     viewTrack(track);

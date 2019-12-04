@@ -4,8 +4,17 @@
   justify-content: space-evenly;
 }
 
-h1 {
+h1,
+.user-welcome-p {
   color: white;
+}
+
+/* NEED TO DEBUG */
+.dropdown-menu {
+  z-index: 10;
+  overflow: hidden;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0;
 }
 
 .navbar {
@@ -41,7 +50,7 @@ h1 {
   text-align: center;
 }
 
-.card {
+.track-card {
   border: 2px solid white;
   height: 10%;
   width: 40%;
@@ -50,7 +59,7 @@ h1 {
   margin: 1rem 2rem;
 }
 
-.card button {
+.track-card button {
   background: none;
   width: 20%;
   height: 20%;
@@ -61,7 +70,7 @@ h1 {
   transition: all 0.5s ease;
 }
 
-.card button:hover {
+.track-card button:hover {
   color: black;
   background: white;
 }
