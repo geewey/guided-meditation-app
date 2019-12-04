@@ -117,10 +117,22 @@ const app = () => {
     }
   };
 
+
+
+// when user clicks on a category - function getTracksByCategory
+//  const getTracksByCategory = () => {
+//     console.log('test')
+//  }
+
+//  navbar click event for Favorites - should show user all tracks that have been liked
+
   init();
 
-  // In the trackPlayerPanel section we need to display the selected track details:
-  // track title - track length - track timer - favorite button
 };
 
 app();
+
+
+
+//HTML background image?:
+// src="https://images.unsplash.com/photo-1542382156909-9ae37b3f56fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=813&q=80"
