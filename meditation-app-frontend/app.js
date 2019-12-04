@@ -35,13 +35,11 @@ const userForm = document.querySelector("#sign-in");
 userForm.addEventListener("submit", e => {
   submitUser(e, userForm);
 });
-
 const submitUser = (e, userForm) => {
   e.preventDefault();
   const userInputForm = userForm.querySelector("input");
   findOrCreateUser(userInputForm);
 };
-
 const findOrCreateUser = userInputForm => {
   API.post(USERS_URL, userInputForm.value)
     .then(console.log) // rendering the username to the page, loading the favorites of an existing user
