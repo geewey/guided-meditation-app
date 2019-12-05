@@ -8,11 +8,19 @@ const get = (url, id = "") => {
   return fetch(url + id).then(resp => resp.json());
 };
 
-const post = (url, postData) => {
+const postUser = (url, postData) => {
   return fetch(url, {
     method: "POST",
     headers: apiHeader,
     body: JSON.stringify({ username: postData })
+  }).then(resp => resp.json());
+};
+
+const postFavorite = (url, user_id, track_id) => {
+  return fetch(url, {
+    method: "POST",
+    headers: apiHeader,
+    body: JSON.stringify({ user_id, track_id })
   }).then(resp => resp.json());
 };
 
@@ -55,12 +63,13 @@ const submitUser = (e, userForm) => {
 const findOrCreateUser = (userInputField, userForm) => {
   // renders the username to the page, in place of username input field
   // loads the favorites of an existing user
-  API.post(USERS_URL, userInputField.value)
+  API.postUser(USERS_URL, userInputField.value)
     .then(userData => {
       isUserLoggedIn = true;
       toggleUserSignIn(userInputField, userForm);
       toggleUserFavorites(userData);
     })
+    .then(activateUser)
     .catch(error => console.log(error.message));
 };
 const toggleUserSignIn = (userInputField, userForm) => {
@@ -89,9 +98,9 @@ const activateUserFavorites = (trackId, allTrackCards) => {
   allTrackCards.forEach(trackCard => {
     if (trackCard.id == `track-${trackId}`) {
       console.log(trackCard);
-      trackCardHeart = trackCard.querySelector(".favorite");
-      trackCardHeart.innerText = "♥";
-      trackCardHeart.classList.add("activated");
+      trackCardFavBtn = trackCard.querySelector(".favorite");
+      trackCardFavBtn.innerText = "♥";
+      trackCardFavBtn.classList.add("activated");
       trackCard.classList.add("user-favorite");
     }
   });
@@ -117,9 +126,6 @@ const renderTrackCard = track => {
   const favoriteBtn = document.createElement("button");
   favoriteBtn.innerText = "♡";
   favoriteBtn.className = "favorite";
-  favoriteBtn.addEventListener("click", e => {
-    toggleFavoriteBtn(favoriteBtn);
-  });
 
   const viewBtn = document.createElement("button");
   viewBtn.innerText = "View";
@@ -134,11 +140,12 @@ const renderTrackCard = track => {
   });
 };
 
-const toggleFavoriteBtn = favoriteBtn => {
+const toggleFavoriteBtn = (favoriteBtn, track) => {
   console.log(isUserLoggedIn);
   if (isUserLoggedIn) {
     favoriteBtn.innerText = "♥";
     favoriteBtn.classList.add("activated");
+    addToUserFavorites(track);
   }
 };
 
