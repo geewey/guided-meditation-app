@@ -16,15 +16,23 @@ const post = (url, postData) => {
   }).then(resp => resp.json());
 };
 
+const destroy = (url, id) => {
+  return fetch(url + id, {
+    method: "DELETE"
+  }).then(resp => resp.json());
+};
+
 const TRACKS_URL = "http://localhost:3000/tracks/";
 const USERS_URL = "http://localhost:3000/users/";
+const FAVORITES_URL = "http://localhost:3000/favorites/";
 
-const API = { get, post };
+const API = { get, post, destroy };
 
 // CONSTs
 const alltracksPanel = document.querySelector(".all-tracks-panel");
 const trackPlayerPanel = document.querySelector(".track-player-panel");
 const svgNamespace = "http://www.w3.org/2000/svg";
+let isUserLoggedIn = false;
 
 //FUNCTIONs
 const init = () => {
@@ -49,6 +57,7 @@ const findOrCreateUser = (userInputField, userForm) => {
   // loads the favorites of an existing user
   API.post(USERS_URL, userInputField.value)
     .then(userData => {
+      isUserLoggedIn = true;
       toggleUserSignIn(userInputField, userForm);
       toggleUserFavorites(userData);
     })
@@ -83,7 +92,7 @@ const activateUserFavorites = (trackId, allTrackCards) => {
       trackCardHeart = trackCard.querySelector(".favorite");
       trackCardHeart.innerText = "♥";
       trackCardHeart.classList.add("activated");
-      trackCard.classList.add("favorite");
+      trackCard.classList.add("user-favorite");
     }
   });
 };
@@ -123,13 +132,15 @@ const renderTrackCard = track => {
   viewBtn.addEventListener("click", e => {
     viewTrack(track);
   });
-  //when user clicks on track need to show the selected track details with the player feature
 };
 
-// const toggleFavoriteBtn = favoriteBtn => {
-//   favoriteBtn.innerText = "♥";
-//   favoriteBtn.classList.add("activated");
-// };
+const toggleFavoriteBtn = favoriteBtn => {
+  console.log(isUserLoggedIn);
+  if (isUserLoggedIn) {
+    favoriteBtn.innerText = "♥";
+    favoriteBtn.classList.add("activated");
+  }
+};
 
 const viewTrack = track => {
   trackPlayerPanel.innerHTML = "";
