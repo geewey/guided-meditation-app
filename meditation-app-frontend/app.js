@@ -79,12 +79,10 @@ const renderTrackCard = track => {
   viewBtn.addEventListener("click", e => {
     viewTrack(track);
   });
-  //when user clicks on track need to show the selected track details with the player feature
 };
 
 const viewTrack = track => {
   trackPlayerPanel.innerHTML = "";
-  let timeInSecs = track.length_in_seconds
 
   const h1 = document.createElement("h1");
   h1.innerText = track.title;
@@ -105,13 +103,15 @@ const viewTrack = track => {
   playImg.className = "play";
   playImg.src = "./svg/play.svg";
   playImg.addEventListener("click", e => {
-     checkPlaying(audio, playImg, timeDisplay, timeInSecs);
-
+     checkPlaying(audio, playImg, timer, timeDisplay);
   });
 
+  let timer = track.length_in_seconds
   const timeDisplay = document.createElement("h1");
   timeDisplay.className = "time-display";
-  
+  let mins = Math.floor(timer/ 60)
+  let seconds = Math.floor(timer % 60)
+  timeDisplay.textContent = `${mins}:${seconds}`
 
   // replay fires only after time runs down to 0:00
   // const replay = document.querySelector("replay");
@@ -145,39 +145,49 @@ const viewTrack = track => {
   movingOutlineSVG.append(circleMovingOutline);
 
 
+
+  // let radius = circleMovingOutline.getAttributeNS(null, "r", "216.5");
+  // let circumference = 2 * Math.PI * radius;
+  // movingOutlineSVG.style.strokeDasharray = circumference;
+  // movingOutlineSVG.style.strokeDashoffset = circumference;
+  
+  // track.ontimeupdate = () => {
+  //   let currentTime = track.currentTime;
+  //   let progress = circumference - (currentTime / timer) * circumference
+  //   movingOutlineSVG.style.strokeDashoffset = progress;
+  // }
+
   trackPlayerPanel.append(h1, h2, audio, playAnimationDiv, timeDisplay);
-  playAnimationDiv.append(playImg, trackOutlineSVG, movingOutlineSVG);
+  playAnimationDiv.append(playImg, movingOutlineSVG, trackOutlineSVG);
 };
 
 
-
-const checkPlaying = (audio, playImg, timeDisplay, timeInSecs) => {
+const checkPlaying = (audio, playImg, timer, timeDisplay) => {
   console.log(audio);
-
   if (audio.paused) {
     audio.play();
     playImg.src = "./svg/pause.svg";
     setInterval(() => {
-      let mins = Math.floor(timeInSecs/ 60)
-      let seconds = Math.floor(timeInSecs % 60)
+      let mins = Math.floor(timer/ 60)
+      let seconds = Math.floor(timer % 60)
       if (seconds < 10 ){
-        seconds = "0" + Math.floor(timeInSecs % 60)
+        seconds = "0" + Math.floor(timer % 60)
       }
-      timeDisplay.textContent = `${mins}:${seconds}`  
-      timeInSecs-- 
-     }, 1000)
+      timeDisplay.textContent = `${mins}:${seconds}`
+      timer--
+    }, 1000)
   } else {
     audio.pause();
     playImg.src = "./svg/play.svg";
-
-    //need to pause the timeDisplay / timeInSecs.....
-
-    playImg.addEventListener("click", e => {
-      checkPlaying(audio, playImg);
-    });
+    clearInterval(timer, timeDisplay)
+    timeDisplay.textContent = "Paused";
+    // playImg.addEventListener("click", e => {
+    //   checkPlaying(audio, playImg);
+    // });
   }
 
   // when user clicks on a category - function getTracksByCategory
+  // selceted category - use class eg. c1, c2, c3...
   //  const getTracksByCategory = () => {
   //     console.log('test')
   //  }
@@ -187,5 +197,3 @@ const checkPlaying = (audio, playImg, timeDisplay, timeInSecs) => {
 
 init();
 
-//HTML background image?:
-// src="https://images.unsplash.com/photo-1542382156909-9ae37b3f56fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=813&q=80"
