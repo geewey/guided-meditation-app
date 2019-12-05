@@ -9,8 +9,8 @@ class FavoritesController < ApplicationController
     end
 
     def create
-        favorite = Favorite.new
-        byebug
+        favorite = Favorite.create(user_id: params["user_id"], track_id: params["track_id"])
+        # byebug
         render json: favorite, :include => {
             :user => {:except => [:created_at, :updated_at]},
             :track => {:except => [:created_at, :updated_at]}
