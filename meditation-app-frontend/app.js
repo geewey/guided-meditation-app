@@ -91,8 +91,8 @@ const toggleUserFavorites = userData => {
   const userTracks = userData.tracks;
   const idsOfUserTracks = userTracks.map(tracks => tracks.id);
 
-  for (let id of idsOfUserTracks) {
-    activateUserFavorites(id, allTrackCards);
+  for (let trackId of idsOfUserTracks) {
+    activateUserFavorites(trackId, allTrackCards);
   }
 };
 
@@ -101,40 +101,45 @@ const activateUserFavorites = (trackId, allTrackCards) => {
     trackCardFavBtn = trackCard.querySelector(".favorite-button");
 
     if (trackCard.getAttribute("track-id") == trackId) {
-      console.log(`this is one of the user's favorites: ${trackCard.id}`);
+      console.log(`this is one of the user's favorites: ${trackCard}`);
       trackCard.classList.add("user-favorite");
       trackCardFavBtn.innerText = "♥";
       trackCardFavBtn.classList.add("activated");
     }
-
-    trackCardFavBtn.addEventListener("click", e => {
-      toggleFavoriteBtn(trackCard, trackCardFavBtn, trackId);
-    });
   });
 };
 
-const toggleFavoriteBtn = (trackCard, trackCardFavBtn, trackId) => {
+const activateFavoriteButton = () => {
+  trackCardFavBtns = document.getElementsByClassName("favorite-button");
+  for (const favBtn of trackCardFavBtnsfavBtns)
+    favBtn.addEventListener("click", e => {
+      toggleFavoriteBtn(trackCard, trackCardFavBtn, e);
+    });
+};
+
+const toggleFavoriteBtn = (trackCard, trackCardFavBtn, e) => {
   console.log(`is user logged in? ${isUserLoggedIn}`);
   console.log("If true, favorite will work");
+  const clickedTrackId = e.target.getAttribute("track-id");
   if (isUserLoggedIn && !trackCard.classList.contains("activated")) {
     trackCardFavBtn.innerText = "♥";
     trackCardFavBtn.classList.add("activated");
-    addToUserFavorites(trackId);
-  } else if (isUserLoggedIn) {
+    addToUserFavorites(clickedTrackId);
+  } else if (isUserLoggedIn && trackCard.classList.contains("activated")) {
     trackCardFavBtn.innerText = "♡";
     trackCardFavBtn.classList.remove("activated");
-    deleteFromUserFavorites(trackId);
+    deleteFromUserFavorites(clickedTrackId);
   }
 };
 
-const addToUserFavorites = trackId => {
-  API.postFavorite(FAVORITES_URL, trackId, currentUserId)
+const addToUserFavorites = clickedTrackId => {
+  API.postFavorite(FAVORITES_URL, currentUserId, clickedTrackId)
     .then(console.log)
     .catch(error => console.log(error.message));
 };
 
-const deleteFromUserFavorites = trackId => {
-  API.destroy(FAVORITES_URL, trackId)
+const deleteFromUserFavorites = clickedTrackId => {
+  API.destroy(FAVORITES_URL, clickedTrackId)
     .then(console.log)
     .catch(error => console.log(error.message));
 };
@@ -152,7 +157,6 @@ const renderTrackCard = track => {
 
   trackCard.setAttribute("track-id", track.id);
   trackCard.className = `track-card ${trackCategory}`;
-  trackCard.id = `track-${track.id}`;
 
   const title = document.createElement("h2");
   title.innerText = track.title;
@@ -161,6 +165,7 @@ const renderTrackCard = track => {
   const favoriteBtn = document.createElement("button");
   favoriteBtn.innerText = "♡";
   favoriteBtn.className = "favorite-button";
+  favoriteBtn.setAttribute("track-id", track.id);
 
   const viewBtn = document.createElement("button");
   viewBtn.innerText = "View";
