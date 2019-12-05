@@ -34,7 +34,7 @@ const TRACKS_URL = "http://localhost:3000/tracks/";
 const USERS_URL = "http://localhost:3000/users/";
 const FAVORITES_URL = "http://localhost:3000/favorites/";
 
-const API = { get, post, destroy };
+const API = { get, postUser, postFavorite, destroy };
 
 // CONSTs
 const alltracksPanel = document.querySelector(".all-tracks-panel");
@@ -69,7 +69,6 @@ const findOrCreateUser = (userInputField, userForm) => {
       toggleUserSignIn(userInputField, userForm);
       toggleUserFavorites(userData);
     })
-    .then(activateUser)
     .catch(error => console.log(error.message));
 };
 const toggleUserSignIn = (userInputField, userForm) => {
@@ -96,7 +95,7 @@ const toggleUserFavorites = userData => {
 
 const activateUserFavorites = (trackId, allTrackCards) => {
   allTrackCards.forEach(trackCard => {
-    if (trackCard.id == `track-${trackId}`) {
+    if (trackCard.getAttribute("track-id") == trackId) {
       console.log(trackCard);
       trackCardFavBtn = trackCard.querySelector(".favorite");
       trackCardFavBtn.innerText = "♥";
@@ -116,6 +115,8 @@ const renderTrackCard = track => {
   //at some point display the track cards with images.
   const trackCard = document.createElement("div");
   const trackCategory = track.category.split(" ").join("-");
+
+  trackCard.setAttribute("track-id", track.id);
   trackCard.className = `track-card ${trackCategory}`;
   trackCard.id = `track-${track.id}`;
 
