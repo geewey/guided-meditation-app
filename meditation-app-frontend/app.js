@@ -65,16 +65,27 @@ const toggleUserSignIn = (userInputField, userForm) => {
 };
 
 const toggleUserFavorites = userData => {
-  const userFavorites = userData.favorites;
-  const allTracks = document.getElementsByClassName("track-card");
-  const editedAllTracks = allTracks.map(track => {
-    track.id, track.name;
-  });
-  userFavorites.filter(allTracks);
-  console.log(allTracks);
-  console.log(userFavorites);
+  const allTrackCards = Array.from(
+    document.getElementsByClassName("track-card")
+  );
+  const userTracks = userData.tracks;
+  const idsOfUserTracks = userTracks.map(tracks => tracks.id);
 
-  // how to match track within user's favorites with all rendered tracks??
+  for (let id of idsOfUserTracks) {
+    activateUserFavorites(id, allTrackCards);
+  }
+};
+
+const activateUserFavorites = (trackId, allTrackCards) => {
+  allTrackCards.forEach(trackCard => {
+    if (trackCard.id == `track-${trackId}`) {
+      console.log(trackCard);
+      trackCardHeart = trackCard.querySelector(".favorite");
+      trackCardHeart.innerText = "♥";
+      trackCardHeart.classList.add("activated");
+      trackCard.classList.add("favorite");
+    }
+  });
 };
 
 const fetchTracks = () => {
@@ -94,8 +105,12 @@ const renderTrackCard = track => {
   title.innerText = track.title;
   title.style.color = "white";
 
-  const likeBtn = document.createElement("button");
-  likeBtn.innerText = "♡";
+  const favoriteBtn = document.createElement("button");
+  favoriteBtn.innerText = "♡";
+  favoriteBtn.className = "favorite";
+  favoriteBtn.addEventListener("click", e => {
+    toggleFavoriteBtn(favoriteBtn);
+  });
 
   const viewBtn = document.createElement("button");
   viewBtn.innerText = "View";
@@ -103,13 +118,18 @@ const renderTrackCard = track => {
   const br = document.createElement("br");
 
   alltracksPanel.append(trackCard, br);
-  trackCard.append(title, viewBtn, likeBtn);
+  trackCard.append(title, viewBtn, favoriteBtn);
 
   viewBtn.addEventListener("click", e => {
     viewTrack(track);
   });
   //when user clicks on track need to show the selected track details with the player feature
 };
+
+// const toggleFavoriteBtn = favoriteBtn => {
+//   favoriteBtn.innerText = "♥";
+//   favoriteBtn.classList.add("activated");
+// };
 
 const viewTrack = track => {
   trackPlayerPanel.innerHTML = "";

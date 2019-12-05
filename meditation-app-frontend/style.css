@@ -75,6 +75,11 @@ h1,
   background: white;
 }
 
+.track-card .activated {
+  color: red;
+  background: white;
+}
+
 /* .track-player-panel img {
   height: 3%;
   margin-top: 150px;
