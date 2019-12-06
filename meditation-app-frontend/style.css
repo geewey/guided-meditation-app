@@ -48,6 +48,9 @@ h1,
 
 .track-player-panel {
   text-align: center;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 60px;
   /* opacity: 0.2; */
 }
 

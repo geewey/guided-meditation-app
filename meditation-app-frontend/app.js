@@ -191,7 +191,7 @@ const renderTrackCard = track => {
 const viewTrack = track => {
   trackPlayerPanel.innerHTML = "";
 
-  const h1 = document.createElement('h1');  
+  const h1 = document.createElement("h1");
   h1.innerText = track.category;
 
   const header = document.createElement("h2");
@@ -214,23 +214,22 @@ const viewTrack = track => {
   playImg.className = "play";
   playImg.src = "./svg/play.svg";
   playImg.addEventListener("click", e => {
-     checkPlaying(audio, playImg, timer, timeDisplay);
+    checkPlaying(audio, playImg, timer, timeDisplay);
   });
-  
+
   const replayImg = document.createElement("img");
   replayImg.className = "replay";
   replayImg.src = "./svg/replay.svg";
   replayImg.addEventListener("click", () => {
     restartTrack(track);
-  })
+  });
 
-  let timer = track.length_in_seconds
+  let timer = track.length_in_seconds;
   const timeDisplay = document.createElement("h1");
   timeDisplay.className = "time-display";
-  let mins = Math.floor(timer/ 60)
-  let seconds = Math.floor(timer % 60)
-  timeDisplay.textContent = `${mins}:${seconds}`
-
+  let mins = Math.floor(timer / 60);
+  let seconds = Math.floor(timer % 60);
+  timeDisplay.textContent = `${mins}:${seconds}`;
 
   const trackOutlineSVG = document.createElementNS(svgNamespace, "svg");
   trackOutlineSVG.className = "track-outline";
@@ -260,8 +259,6 @@ const viewTrack = track => {
   circleMovingOutline.setAttributeNS(null, "stroke-width", "20");
   movingOutlineSVG.append(circleMovingOutline);
 
-
-
   // let radius = circleMovingOutline.getAttributeNS(null, "r", "216.5");
   let radius = circleMovingOutline.getAttribute("r", "216.5");
   let circumference = 2 * Math.PI * radius;
@@ -274,20 +271,27 @@ const viewTrack = track => {
     let elapsed = timer - currentTime;
     let seconds = Math.floor(elapsed % 60);
     let minutes = Math.floor(elapsed / 60);
-    let progress = circumference - (currentTime / timer) * circumference
+    let progress = circumference - (currentTime / timer) * circumference;
     movingOutlineSVG.style.strokeDashoffset = progress;
-  }
+  };
 
-  trackPlayerPanel.append(h1, header, h3, audio, playAnimationDiv, timeDisplay, replayImg);
+  trackPlayerPanel.append(
+    h1,
+    header,
+    h3,
+    audio,
+    playAnimationDiv,
+    timeDisplay,
+    replayImg
+  );
   playAnimationDiv.append(playImg, movingOutlineSVG, trackOutlineSVG);
 };
 
 const restartTrack = track => {
-  console.log(track)
+  console.log(track);
   // let currentTime = track.currentTime;
   // track.currentTime = 0;
-}
-
+};
 
 const checkPlaying = (audio, playImg, timer, timeDisplay) => {
   console.log(audio);
@@ -295,18 +299,18 @@ const checkPlaying = (audio, playImg, timer, timeDisplay) => {
     audio.play();
     playImg.src = "./svg/pause.svg";
     setInterval(() => {
-      let mins = Math.floor(timer/ 60)
-      let seconds = Math.floor(timer % 60)
-      if (seconds < 10 ){
-        seconds = "0" + Math.floor(timer % 60)
+      let mins = Math.floor(timer / 60);
+      let seconds = Math.floor(timer % 60);
+      if (seconds < 10) {
+        seconds = "0" + Math.floor(timer % 60);
       }
-      timeDisplay.textContent = `${mins}:${seconds}`
-      timer--
-    }, 1000)
+      timeDisplay.textContent = `${mins}:${seconds}`;
+      timer--;
+    }, 1000);
   } else {
     audio.pause();
     playImg.src = "./svg/play.svg";
-    //need to pause the timer... 
+    //need to pause the timer...
     playImg.addEventListener("click", e => {
       checkPlaying(audio, playImg);
     });
@@ -322,4 +326,3 @@ const checkPlaying = (audio, playImg, timer, timeDisplay) => {
 };
 
 init();
-
