@@ -1,3 +1,7 @@
+body {
+  font-family: "Open Sans", "Helvetica Neue", sans-serif;
+}
+
 .panels {
   display: grid;
   grid-template-columns: 6fr 4fr;
@@ -34,10 +38,14 @@ h1,
 
 #background-image {
   position: fixed;
-  top: 0%;
-  left: 0%;
-  width: 100%;
+  top: 0;
+  /* left: 0%; */
+  /* width: 100vw; */
   z-index: -10;
+  /* height: 100vh; */
+  min-width: 100vw;
+  min-height: 100vh;
+  filter: blur(3px);
 }
 
 .all-tracks-panel,
@@ -56,22 +64,60 @@ h1,
 
 .track-card {
   border: 2px solid white;
+  border-radius: 15px;
   height: 10%;
-  width: 40%;
+  width: 50%;
   text-align: center;
   padding: 1rem;
   margin: 1rem 2rem;
+  margin-bottom: 3%;
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+input[type="text"] {
+  background: none;
+
+  width: 200px;
+  height: 30px;
+  color: white;
+  border: 2px solid white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button {
+  background: none;
+  width: 75px;
+  height: 30px;
+  color: white;
+  border: 2px solid white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  /* margin: 3%; */
+}
+button:hover {
+  color: black;
+  background: white;
 }
 
 .track-card button {
-  background: none;
-  width: 20%;
+  background: rgba(255, 255, 255, 0.15);
+  width: 30%;
   height: 20%;
   color: white;
   border: 2px solid white;
   border-radius: 5px;
   cursor: pointer;
-  transition: all 0.5s ease;
+  transition: all 0.2s ease;
+  margin: 3%;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.12);
 }
 
 .track-card button:hover {

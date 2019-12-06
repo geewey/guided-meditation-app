@@ -177,9 +177,10 @@ const renderTrackCard = track => {
   const viewBtn = document.createElement("button");
   viewBtn.innerText = "View";
   // may replace br with CSS margin/padding
-  const br = document.createElement("br");
+  // const br = document.createElement("br");
 
-  alltracksPanel.append(trackCard, br);
+  alltracksPanel.append(trackCard);
+  // alltracksPanel.append(trackCard, br);
   trackCard.append(title, viewBtn, favoriteBtn);
 
   viewBtn.addEventListener("click", e => {
