@@ -191,14 +191,18 @@ const renderTrackCard = track => {
 const viewTrack = track => {
   trackPlayerPanel.innerHTML = "";
 
-  const h1 = document.createElement("h1");
-  h1.innerText = track.title;
+  const h1 = document.createElement('h1');  
+  h1.innerText = track.category;
 
-  const h2 = document.createElement("h2");
-  h2.innerText =
-    `${Math.floor(track.length_in_seconds / 60)} min ` +
+  const header = document.createElement("h2");
+  header.innerText = track.title;
+  header.style.color = "white";
+
+  const h3 = document.createElement("h3");
+  h3.innerText =
+    `Time: ${Math.floor(track.length_in_seconds / 60)} min ` +
     `${track.length_in_seconds % 60} secs`;
-  h2.style.color = "white";
+  h3.style.color = "white";
 
   const audio = document.createElement("audio");
   audio.src = `./tracks/${track.filepath}`;
@@ -210,11 +214,23 @@ const viewTrack = track => {
   playImg.className = "play";
   playImg.src = "./svg/play.svg";
   playImg.addEventListener("click", e => {
-    checkPlaying(audio, playImg);
+     checkPlaying(audio, playImg, timer, timeDisplay);
   });
+  
+  const replayImg = document.createElement("img");
+  replayImg.className = "replay";
+  replayImg.src = "./svg/replay.svg";
+  replayImg.addEventListener("click", () => {
+    restartTrack(track);
+  })
 
-  // replay fires only after time runs down to 0:00
-  // const replay = document.querySelector("replay");
+  let timer = track.length_in_seconds
+  const timeDisplay = document.createElement("h1");
+  timeDisplay.className = "time-display";
+  let mins = Math.floor(timer/ 60)
+  let seconds = Math.floor(timer % 60)
+  timeDisplay.textContent = `${mins}:${seconds}`
+
 
   const trackOutlineSVG = document.createElementNS(svgNamespace, "svg");
   trackOutlineSVG.className = "track-outline";
@@ -244,27 +260,60 @@ const viewTrack = track => {
   circleMovingOutline.setAttributeNS(null, "stroke-width", "20");
   movingOutlineSVG.append(circleMovingOutline);
 
-  const timeDisplay = document.createElement("h1");
-  timeDisplay.className = "time-display";
-  timeDisplay.innerText = "0:00";
 
-  playAnimationDiv.append(playImg, trackOutlineSVG, movingOutlineSVG);
-  trackPlayerPanel.append(h1, h2, audio, playAnimationDiv, timeDisplay);
+
+  // let radius = circleMovingOutline.getAttributeNS(null, "r", "216.5");
+  let radius = circleMovingOutline.getAttribute("r", "216.5");
+  let circumference = 2 * Math.PI * radius;
+  movingOutlineSVG.style.strokeDasharray = circumference;
+  movingOutlineSVG.style.strokeDashoffset = circumference;
+
+  // we need to animate the cirle.
+  track.ontimeupdate = () => {
+    let currentTime = track.currentTime;
+    let elapsed = timer - currentTime;
+    let seconds = Math.floor(elapsed % 60);
+    let minutes = Math.floor(elapsed / 60);
+    let progress = circumference - (currentTime / timer) * circumference
+    movingOutlineSVG.style.strokeDashoffset = progress;
+  }
+
+  trackPlayerPanel.append(h1, header, h3, audio, playAnimationDiv, timeDisplay, replayImg);
+  playAnimationDiv.append(playImg, movingOutlineSVG, trackOutlineSVG);
 };
 
-const checkPlaying = (audio, playImg) => {
+const restartTrack = track => {
+  console.log(track)
+  // let currentTime = track.currentTime;
+  // track.currentTime = 0;
+}
+
+
+const checkPlaying = (audio, playImg, timer, timeDisplay) => {
   console.log(audio);
   if (audio.paused) {
     audio.play();
     playImg.src = "./svg/pause.svg";
+    setInterval(() => {
+      let mins = Math.floor(timer/ 60)
+      let seconds = Math.floor(timer % 60)
+      if (seconds < 10 ){
+        seconds = "0" + Math.floor(timer % 60)
+      }
+      timeDisplay.textContent = `${mins}:${seconds}`
+      timer--
+    }, 1000)
   } else {
     audio.pause();
     playImg.src = "./svg/play.svg";
+    //need to pause the timer... 
     playImg.addEventListener("click", e => {
       checkPlaying(audio, playImg);
     });
   }
+
   // when user clicks on a category - function getTracksByCategory
+  // selceted category - use class eg. c1, c2, c3...
   //  const getTracksByCategory = () => {
   //     console.log('test')
   //  }
@@ -274,5 +323,3 @@ const checkPlaying = (audio, playImg) => {
 
 init();
 
-//HTML background image?:
-// src="https://images.unsplash.com/photo-1542382156909-9ae37b3f56fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=813&q=80"
