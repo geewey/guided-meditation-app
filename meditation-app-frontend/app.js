@@ -26,7 +26,8 @@ const postFavorite = (url, user_id, track_id) => {
 
 const destroy = (url, id) => {
   return fetch(url + id, {
-    method: "DELETE"
+    method: "DELETE",
+    headers: apiHeader
   }).then(resp => resp.json());
 };
 
@@ -87,26 +88,23 @@ const toggleUserSignIn = (userInputField, userForm) => {
 };
 
 // Render sign-in user's favorite track(s)
+// toggles button to "active" for existing favorites
 const toggleUserFavorites = userData => {
   const allTrackCards = Array.from(
     document.getElementsByClassName("track-card")
   );
   const userFavorites = userData.favorites;
-  const trackIdsOfUserFavs = userFavorites.map(favorites => favorites.track_id);
-  console.log(trackIdsOfUserFavs);
-  for (let trackId of trackIdsOfUserFavs) {
-    activateUserFavorites(trackId, allTrackCards, userFavorites);
+  for (let userFavorite of userFavorites) {
+    activateUserFavorites(userFavorite, allTrackCards);
   }
 };
-const activateUserFavorites = (trackId, allTrackCards, userFavorites) => {
+const activateUserFavorites = (userFavorite, allTrackCards) => {
   allTrackCards.forEach(trackCard => {
     trackCardFavBtn = trackCard.querySelector(".favorite-button");
 
-    if (trackCard.getAttribute("track-id") == trackId) {
-      console.log("this is one of the user's favorites:");
-      console.log(trackCard);
+    if (trackCard.getAttribute("track-id") == userFavorite.track_id) {
       trackCard.classList.add("user-favorite");
-      trackCard.dataset;
+      trackCard.dataset.favoriteId = userFavorite.id;
       trackCardFavBtn.innerText = "♥";
       trackCardFavBtn.classList.add("activated");
     }
@@ -114,34 +112,38 @@ const activateUserFavorites = (trackId, allTrackCards, userFavorites) => {
 };
 
 // Set favorite button functionality
+// only active if isUserLoggedIn === true
 const toggleFavoriteBtn = (trackCard, trackCardFavBtn, track) => {
-  console.log(`is user logged in? ${isUserLoggedIn}`);
-  console.log("If true, favorite will work");
   const clickedTrackId = track.id;
-  console.log(clickedTrackId);
   if (isUserLoggedIn && !trackCardFavBtn.classList.contains("activated")) {
     trackCardFavBtn.innerText = "♥";
     trackCardFavBtn.classList.add("activated");
-    addToUserFavorites(clickedTrackId);
+    addToUserFavorites(clickedTrackId, trackCard);
   } else if (
     isUserLoggedIn &&
     trackCardFavBtn.classList.contains("activated")
   ) {
     trackCardFavBtn.innerText = "♡";
     trackCardFavBtn.classList.remove("activated");
-    deleteFromUserFavorites(clickedTrackId);
+    deleteFromUserFavorites(trackCard.dataset.favoriteId, trackCard);
   }
 };
 
-const addToUserFavorites = clickedTrackId => {
+const addToUserFavorites = (clickedTrackId, trackCard) => {
+  // add favorite id to card
   API.postFavorite(FAVORITES_URL, currentUserId, clickedTrackId)
-    .then(console.log)
+    .then(favData => {
+      trackCard.dataset.favoriteId = favData.id;
+    })
     .catch(error => console.log(error.message));
 };
 
-const deleteFromUserFavorites = clickedTrackId => {
-  API.destroy(FAVORITES_URL, clickedTrackId)
-    .then(console.log)
+const deleteFromUserFavorites = (favoriteId, trackCard) => {
+  // remove favorite id from card
+  API.destroy(FAVORITES_URL, favoriteId)
+    .then(() => {
+      trackCard.removeAttribute("data-favorite-id");
+    })
     .catch(error => console.log(error.message));
 };
 

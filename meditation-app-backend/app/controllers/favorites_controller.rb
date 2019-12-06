@@ -24,10 +24,13 @@ class FavoritesController < ApplicationController
         }, :except => [:created_at, :updated_at]
     end
 
-    def delete
-        byebug
+    def destroy
         favorite = Favorite.find_by(id: params["id"])
         favorite.delete
+        render json: favorite, :include => {
+            :user => {:except => [:created_at, :updated_at]},
+            :track => {:except => [:created_at, :updated_at]}
+        }, :except => [:created_at, :updated_at]
     end
 
 end
