@@ -48,6 +48,7 @@ const init = () => {
   fetchTracks();
 };
 
+// Set user sign-in checks
 const userForm = document.querySelector("#sign-in");
 userForm.addEventListener("submit", e => {
   submitUser(e, userForm);
@@ -66,6 +67,7 @@ const findOrCreateUser = (userInputField, userForm) => {
   // loads the favorites of an existing user
   API.postUser(USERS_URL, userInputField.value)
     .then(userData => {
+      console.log(userData);
       isUserLoggedIn = true;
       currentUserId = userData.id;
       toggleUserSignIn(userInputField, userForm);
@@ -84,48 +86,47 @@ const toggleUserSignIn = (userInputField, userForm) => {
   signInOverlay.append(userWelcomeP);
 };
 
+// Render sign-in user's favorite track(s)
 const toggleUserFavorites = userData => {
   const allTrackCards = Array.from(
     document.getElementsByClassName("track-card")
   );
-  const userTracks = userData.tracks;
-  const idsOfUserTracks = userTracks.map(tracks => tracks.id);
-
-  for (let trackId of idsOfUserTracks) {
-    activateUserFavorites(trackId, allTrackCards);
+  const userFavorites = userData.favorites;
+  const trackIdsOfUserFavs = userFavorites.map(favorites => favorites.track_id);
+  console.log(trackIdsOfUserFavs);
+  for (let trackId of trackIdsOfUserFavs) {
+    activateUserFavorites(trackId, allTrackCards, userFavorites);
   }
 };
-
-const activateUserFavorites = (trackId, allTrackCards) => {
+const activateUserFavorites = (trackId, allTrackCards, userFavorites) => {
   allTrackCards.forEach(trackCard => {
     trackCardFavBtn = trackCard.querySelector(".favorite-button");
 
     if (trackCard.getAttribute("track-id") == trackId) {
-      console.log(`this is one of the user's favorites: ${trackCard}`);
+      console.log("this is one of the user's favorites:");
+      console.log(trackCard);
       trackCard.classList.add("user-favorite");
+      trackCard.dataset;
       trackCardFavBtn.innerText = "♥";
       trackCardFavBtn.classList.add("activated");
     }
   });
 };
 
-const activateFavoriteButton = () => {
-  trackCardFavBtns = document.getElementsByClassName("favorite-button");
-  for (const favBtn of trackCardFavBtnsfavBtns)
-    favBtn.addEventListener("click", e => {
-      toggleFavoriteBtn(trackCard, trackCardFavBtn, e);
-    });
-};
-
-const toggleFavoriteBtn = (trackCard, trackCardFavBtn, e) => {
+// Set favorite button functionality
+const toggleFavoriteBtn = (trackCard, trackCardFavBtn, track) => {
   console.log(`is user logged in? ${isUserLoggedIn}`);
   console.log("If true, favorite will work");
-  const clickedTrackId = e.target.getAttribute("track-id");
-  if (isUserLoggedIn && !trackCard.classList.contains("activated")) {
+  const clickedTrackId = track.id;
+  console.log(clickedTrackId);
+  if (isUserLoggedIn && !trackCardFavBtn.classList.contains("activated")) {
     trackCardFavBtn.innerText = "♥";
     trackCardFavBtn.classList.add("activated");
     addToUserFavorites(clickedTrackId);
-  } else if (isUserLoggedIn && trackCard.classList.contains("activated")) {
+  } else if (
+    isUserLoggedIn &&
+    trackCardFavBtn.classList.contains("activated")
+  ) {
     trackCardFavBtn.innerText = "♡";
     trackCardFavBtn.classList.remove("activated");
     deleteFromUserFavorites(clickedTrackId);
@@ -144,6 +145,7 @@ const deleteFromUserFavorites = clickedTrackId => {
     .catch(error => console.log(error.message));
 };
 
+// Fetch all tracks from Rails API
 const fetchTracks = () => {
   API.get(TRACKS_URL).then(tracksData => renderTracks(tracksData));
 };
@@ -166,6 +168,9 @@ const renderTrackCard = track => {
   favoriteBtn.innerText = "♡";
   favoriteBtn.className = "favorite-button";
   favoriteBtn.setAttribute("track-id", track.id);
+  favoriteBtn.addEventListener("click", () => {
+    toggleFavoriteBtn(trackCard, favoriteBtn, track);
+  });
 
   const viewBtn = document.createElement("button");
   viewBtn.innerText = "View";
@@ -180,6 +185,7 @@ const renderTrackCard = track => {
   });
 };
 
+// Render selected track to view panel
 const viewTrack = track => {
   trackPlayerPanel.innerHTML = "";
 

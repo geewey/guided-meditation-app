@@ -24,4 +24,10 @@ class FavoritesController < ApplicationController
         }, :except => [:created_at, :updated_at]
     end
 
+    def delete
+        byebug
+        favorite = Favorite.find_by(id: params["id"])
+        favorite.delete
+    end
+
 end
