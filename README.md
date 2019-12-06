@@ -14,8 +14,8 @@
 # Special thanks:
 
 - Developed By Ed, inspiration for the player functionality:
-  ..\* Github: https://github.com/developedbyed/meditation-app
-  ..\* Video tutorial: https://www.youtube.com/watch?v=oMBXdZzYqEk
+  ... Github: https://github.com/developedbyed/meditation-app
+  ... Video tutorial: https://www.youtube.com/watch?v=oMBXdZzYqEk
 - Niki N., support for CSS:
-  ..\* Github: https://github.com/ned-el-ch
-  ..\* Website: https://ned-el-ch.github.io/blog
+  ... Github: https://github.com/ned-el-ch
+  ... Website: https://ned-el-ch.github.io/blog
