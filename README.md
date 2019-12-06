@@ -8,17 +8,17 @@ Introducing a web application to calm your mind, body, spirit, and coding-finger
 
 2. Open the repository in a code editor
 
-3. Navigate to the "meditation-app-backend" folder using `cd meditation-app-backend`
+3. Navigate to the **meditation-app-backend** folder using `cd meditation-app-backend`
 
 4. Run `bundle install` to install the gems
 
 5. Run `rails s` to start up the Rails server
 
-6. Navigate to the "meditation-app-frontend" folder using `cd ./meditation-app-frontend`
+6. Navigate to the **meditation-app-frontend** folder using `cd ../meditation-app-frontend`
 
 7. Fire up the web application using `open index.html`
 
-8. Enjoy!
+8. **Enjoy!**
 
 # Special thanks:
 
