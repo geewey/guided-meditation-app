@@ -45,7 +45,7 @@ h1,
   /* height: 100vh; */
   min-width: 100vw;
   min-height: 100vh;
-  filter: blur(3px);
+  /* filter: blur(3px); */
 }
 
 .all-tracks-panel,
