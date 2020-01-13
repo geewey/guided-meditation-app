@@ -27,7 +27,11 @@ Introducing a web application to calm your mind, body, spirit, and coding-finger
 - Github: https://github.com/developedbyed/meditation-app
 - Video tutorial: https://www.youtube.com/watch?v=oMBXdZzYqEk
 
-2. Niki N., support for CSS:
+2. The Free Mindfulness Project, for free meditation tracks
+
+- Website: http://www.freemindfulness.org/home
+
+3. Niki N., support for CSS:
 
 - Github: https://github.com/ned-el-ch
 - Website: https://ned-el-ch.github.io/blog
