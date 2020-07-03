@@ -1,34 +1,34 @@
 // API
 const apiHeader = {
   "Content-Type": "application/json",
-  Accept: "application/json"
+  Accept: "application/json",
 };
 
 const get = (url, id = "") => {
-  return fetch(url + id).then(resp => resp.json());
+  return fetch(url + id).then((resp) => resp.json());
 };
 
 const postUser = (url, postData) => {
   return fetch(url, {
     method: "POST",
     headers: apiHeader,
-    body: JSON.stringify({ username: postData })
-  }).then(resp => resp.json());
+    body: JSON.stringify({ username: postData }),
+  }).then((resp) => resp.json());
 };
 
 const postFavorite = (url, user_id, track_id) => {
   return fetch(url, {
     method: "POST",
     headers: apiHeader,
-    body: JSON.stringify({ user_id, track_id })
-  }).then(resp => resp.json());
+    body: JSON.stringify({ user_id, track_id }),
+  }).then((resp) => resp.json());
 };
 
 const destroy = (url, id) => {
   return fetch(url + id, {
     method: "DELETE",
-    headers: apiHeader
-  }).then(resp => resp.json());
+    headers: apiHeader,
+  }).then((resp) => resp.json());
 };
 
 const TRACKS_URL = "http://localhost:3000/tracks/";
@@ -51,7 +51,7 @@ const init = () => {
 
 // Set user sign-in checks
 const userForm = document.querySelector("#sign-in");
-userForm.addEventListener("submit", e => {
+userForm.addEventListener("submit", (e) => {
   submitUser(e, userForm);
 });
 const submitUser = (e, userForm) => {
@@ -67,14 +67,14 @@ const findOrCreateUser = (userInputField, userForm) => {
   // renders the username to the page, in place of username input field
   // loads the favorites of an existing user
   API.postUser(USERS_URL, userInputField.value)
-    .then(userData => {
+    .then((userData) => {
       console.log(userData);
       isUserLoggedIn = true;
       currentUserId = userData.id;
       toggleUserSignIn(userInputField, userForm);
       toggleUserFavorites(userData);
     })
-    .catch(error => console.log(error.message));
+    .catch((error) => console.log(error.message));
 };
 const toggleUserSignIn = (userInputField, userForm) => {
   const signInOverlay = document.querySelector("#sign-in-overlay");
@@ -89,7 +89,7 @@ const toggleUserSignIn = (userInputField, userForm) => {
 
 // Render sign-in user's favorite track(s)
 // toggles button to "active" for existing favorites
-const toggleUserFavorites = userData => {
+const toggleUserFavorites = (userData) => {
   const allTrackCards = Array.from(
     document.getElementsByClassName("track-card")
   );
@@ -99,7 +99,7 @@ const toggleUserFavorites = userData => {
   }
 };
 const activateUserFavorites = (userFavorite, allTrackCards) => {
-  allTrackCards.forEach(trackCard => {
+  allTrackCards.forEach((trackCard) => {
     trackCardFavBtn = trackCard.querySelector(".favorite-button");
 
     if (trackCard.getAttribute("track-id") == userFavorite.track_id) {
@@ -132,10 +132,10 @@ const toggleFavoriteBtn = (trackCard, trackCardFavBtn, track) => {
 const addToUserFavorites = (clickedTrackId, trackCard) => {
   // add favorite id to card
   API.postFavorite(FAVORITES_URL, currentUserId, clickedTrackId)
-    .then(favData => {
+    .then((favData) => {
       trackCard.dataset.favoriteId = favData.id;
     })
-    .catch(error => console.log(error.message));
+    .catch((error) => console.log(error.message));
 };
 
 const deleteFromUserFavorites = (favoriteId, trackCard) => {
@@ -144,17 +144,17 @@ const deleteFromUserFavorites = (favoriteId, trackCard) => {
     .then(() => {
       trackCard.removeAttribute("data-favorite-id");
     })
-    .catch(error => console.log(error.message));
+    .catch((error) => console.log(error.message));
 };
 
 // Fetch all tracks from Rails API
 const fetchTracks = () => {
-  API.get(TRACKS_URL).then(tracksData => renderTracks(tracksData));
+  API.get(TRACKS_URL).then((tracksData) => renderTracks(tracksData));
 };
-const renderTracks = tracksData => {
-  tracksData.forEach(track => renderTrackCard(track));
+const renderTracks = (tracksData) => {
+  tracksData.forEach((track) => renderTrackCard(track));
 };
-const renderTrackCard = track => {
+const renderTrackCard = (track) => {
   //at some point display the track cards with images.
   const trackCard = document.createElement("div");
   const trackCategory = track.category.split(" ").join("-");
@@ -183,13 +183,13 @@ const renderTrackCard = track => {
   // alltracksPanel.append(trackCard, br);
   trackCard.append(title, viewBtn, favoriteBtn);
 
-  viewBtn.addEventListener("click", e => {
+  viewBtn.addEventListener("click", (e) => {
     viewTrack(track);
   });
 };
 
 // Render selected track to view panel
-const viewTrack = track => {
+const viewTrack = (track) => {
   trackPlayerPanel.innerHTML = "";
 
   const h1 = document.createElement("h1");
@@ -214,7 +214,7 @@ const viewTrack = track => {
   const playImg = document.createElement("img");
   playImg.className = "play";
   playImg.src = "./svg/play.svg";
-  playImg.addEventListener("click", e => {
+  playImg.addEventListener("click", (e) => {
     checkPlaying(audio, playImg, timer, timeDisplay);
   });
 
@@ -272,6 +272,7 @@ const viewTrack = track => {
     let elapsed = timer - currentTime;
     let seconds = Math.floor(elapsed % 60);
     let minutes = Math.floor(elapsed / 60);
+    timeDisplay.textContent = `${minutes}:${seconds}`;
     let progress = circumference - (currentTime / timer) * circumference;
     movingOutlineSVG.style.strokeDashoffset = progress;
   };
@@ -288,7 +289,7 @@ const viewTrack = track => {
   playAnimationDiv.append(playImg, movingOutlineSVG, trackOutlineSVG);
 };
 
-const restartTrack = track => {
+const restartTrack = (track) => {
   console.log(track);
   // let currentTime = track.currentTime;
   // track.currentTime = 0;
@@ -312,7 +313,8 @@ const checkPlaying = (audio, playImg, timer, timeDisplay) => {
     audio.pause();
     playImg.src = "./svg/play.svg";
     //need to pause the timer...
-    playImg.addEventListener("click", e => {
+    clearInterval();
+    playImg.addEventListener("click", (e) => {
       checkPlaying(audio, playImg);
     });
   }
