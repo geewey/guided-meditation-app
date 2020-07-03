@@ -1,5 +1,7 @@
 .DS_Store
 
+# Ignore .env file with sensitive information.
+meditation-app-backend/.env
 
 # Ignore bundler config.
 meditation-app-backend/.bundle
