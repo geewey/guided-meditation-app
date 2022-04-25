@@ -42,7 +42,7 @@ Introducing a web application to calm your mind, body, spirit, and coding-finger
 3. Niki N., support for CSS:
 
 - GitHub: https://github.com/ned-el-ch
-- Website: https://ned-el-ch.github.io/blog
+- Website: https://ned-el-ch.dev
 
 # Authors:
 
